@@ -1,0 +1,92 @@
+提示：error: Your local changes to the following files would be overwritten by merge:
+        ......
+	......
+Please, commit your changes or stash them before you can merge.
+Aborting
+
+原因：代码版本冲突
+
+解决：
+git stash  (隐藏冲突的部分)
+git checkout <分支名>(切换到目标分支)
+git pull   (拉取远程的更新 pull=fetch+merge)
+git stash pop	(取消隐藏)
+
+
+==============================================================================================================================================================
+
+
+提示：warning: Your console font probably doesn't support Unicode. If you experience strange characters in the output, consider switching to a TrueType font such as Lucida Console!
+
+原因：代码中含有中文
+
+解决：git config --global core.autocrlf true
+
+
+==============================================================================================================================================================
+
+
+
+提示：SSL certificate problem: self signed certificate
+
+原因：缺失系统环境
+
+解决：git config --global http.sslVerify false  
+
+
+==============================================================================================================================================================
+
+提示：error:failed to push some refs to ......
+
+hint:Updates were rejected because the remote contains work that you do
+	......
+	......
+原因：远程仓库的版本比当前更新
+
+解决：git pull (先合并)
+或者:  git push --force origin (强制覆盖远程)
+
+
+
+==============================================================================================================================================================
+
+提示：refs/remotes/origin/xxx stale (use 'git remote prune' to remove)
+
+原因：本地分支与远程仓库不对应
+
+使用：git remote prune origin  同步远程分支，保持与远程一致
+
+或者:  git fetch -p
+
+
+==============================================================================================================================================================
+
+提示：fatal: pathspec 'README.md' did not match any files.
+
+原因：找不到项目目录或文件(多发生在gitHub上,貌似gitLab不会有这问题)
+
+解决：先执行 echo "# Test" >> README.md
+
+==============================================================================================================================================================
+
+提示：*** Please tell me who you are.
+
+Run
+
+  git config --global user.email "you@example.com"
+  git config --global user.name "Your Name"
+
+to set your account's default identity.
+Omit --global to set the identity only in this repository.
+
+fatal: empty ident name (for <pms@yhd-jqhadoop39.int.yihaodian.com>) not allowed
+
+
+原因：未设置用户信息（往往发生在安装完Git工具后第一次使用）
+
+解决：
+git config --global user.name "<用户名>"
+git config --global user.email "<name@email.com>"
+
+=====================================================================
+

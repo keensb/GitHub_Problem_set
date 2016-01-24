@@ -1,0 +1,175 @@
+本地============================================
+
+创建并初始化git：git init
+
+删除本地文件后同步到本地库：git add --a
+
+
+
+===================================================================
+关于分支的操作
+
+
+1、新建分支
+git branch <新分支名>
+
+
+
+2、切换到某个分支
+git checkout <目标分支名>
+
+注意: 1 2 命令可以合并为 
+git checkout -b <新分支名> 
+相当于新建并切换的新的分支
+
+
+
+3、将目标分支合并到当前所在分支
+git merge <目标分支名>
+
+
+
+4、删除一个分支
+git branch -d <目标分支名>
+
+如果该分支尚未进行过合并工作，会出现提示 error: The branch 'xxxxxx' is not fully merged.
+此时可以通过大写“D”命令强行删除
+git branch -D <目标分支名> 
+
+
+
+5、重命名任何一个分支
+git branch -m <目标分支名> <新名称>
+
+
+
+6、重命名当前所在分支
+git branch -m <新名称>
+
+
+
+7、查看所有分支
+git branch
+如返回 
+*develop
+master
+“*” 表示HEAD所在（即当前）的分支
+
+
+
+8、查看已经合并的分支
+git branch --merged
+
+
+
+9、查看尚未合并的分支
+git branch --no-merged
+
+
+
+10、查看最近提交的各分支的版本号和自定义的说明内容
+git branch -v
+
+
+11、删除远程分支
+git push origin :branch-name
+冒号前面的空格不能少，原理是把一个空分支push到server上，相当于删除该分支。
+
+
+===================================================================
+
+从远程仓库克隆项目到本地时，防止.git文件过大，通过深度参数只克隆最近的一次提交版本：git clone --depth=1
+
+===================================================================
+
+如果多次反复修改和提交项目内容，造成commit次数的增加和.git文件夹的增大，可以在提交本地时使用：
+
+git commit --amend -m "<版本信息>" 
+
+将与前一个版本的commit信息合并，使commit次数不增加
+
+但是提交到远程仓库时可能会提示版本不是最新，可以使用强行推送  git push origin <分支名> -f
+
+===================================================================
+
+默认回滚  git reset --mixed：此为默认方式，不带任何参数的git reset，即时这种方式，它回退到某个版本，只保留源码，回退commit和index信息
+
+软回滚    git reset --soft：回退到某个版本，只回退了commit的信息，不会恢复到index file一级。如果还要提交，直接commit即可
+
+硬回滚    git reset --hard：彻底回退到某个版本，本地的源码也会变为上一个版本的内容，此命令 慎用！
+
+使用
+git reset --hard <commit ID号>  (git reset --soft<commit ID号>)
+或附录参数(git reset --hard HEAD 、git reset --hard HEAD^)来回滚
+
+附录：
+
+    HEAD 最近一个提交
+    HEAD^ 上一次提交
+
+    HEAD^^ 上一次的 上一次的提交（倒数第三次）
+    HEAD^^^ 倒数 第四次的 提交
+
+----------------------
+
+    HEAD~0 最近一个提交
+    HEAD~1 上一次提交
+
+    HEAD~2 上一次的 上一次的提交（倒数第三次）
+    HEAD~3 倒数 第四次的 提交
+
+
+以下是一些reset的示例：
+
+(1) 回退所有内容到上一个版本  
+git reset HEAD^  
+(2) 回退a.py这个文件的版本到上一个版本  
+git reset HEAD^ a.py  
+(3) 向前回退到第3个版本  
+git reset --soft HEAD~3  
+(4) 将本地的状态回退到和远程的一样  
+git reset --hard origin/master  
+(5) 回退到某个版本  
+git reset 057d  
+(7) 回退到上一次提交的状态，按照某一次的commit完全反向的进行一次commit  
+git revert HEAD  
+
+
+===================================================================
+
+误删东西时
+可先通过 
+git reflog 参看历史记录
+git reset --hard prev_id   (先去到被误删的前一个记录的id)
+git cherry-pick target_id  (通过被误删记录的id恢复该记录)
+
+
+===================================================================
+
+删除文件后的提交
+
+git status //可以看到我们删除的哪些文件
+git add .   //删除之后的文件提交git经管。
+git rm a.c //删除文件
+git rm -r gittest //删除目次
+
+
+
+
+
+
+
+
+远程============================================
+
+
+查看远程分支：git branch -a     （远程分支会用红色表示出来，如果你开了颜色支持的话）
+
+删除远程分支：git branch -r -d origin/<分支名>  或 git push origin :<分支名>  (提送一个空白内容的分支，覆盖原远程分支)
+             
+更改远程库地址：git remote rm origin  (删除原地址)
+                git remote add origin <新地址>  (添加新地址)
+
+强行推送本地文件到远程库并覆盖远程文件： git push --force origin 或 git push origin -f
+
+删除不存在对应远程分支的本地分支：git remote prune origin 或 git fetch -p   (先执行fetch后删除)
